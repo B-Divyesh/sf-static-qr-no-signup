@@ -1,5 +1,5 @@
 const CACHE = 'static-qr-shell-v1';
-const SHELL = ['/', '/privacy/', '/terms/', '/favicon.svg', '/assets/blueprint-desk.webp'];
+const SHELL = ['/', '/privacy/', '/terms/', '/favicon.svg', '/assets/blueprint-desk-480.webp'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(SHELL)).then(() => self.skipWaiting()));

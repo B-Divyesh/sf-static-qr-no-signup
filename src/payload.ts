@@ -81,7 +81,7 @@ export function buildPayload(values: PayloadValues): PayloadResult {
       return { payload: '', error: 'Enter the Wi-Fi password, or choose “No password”.' };
     }
     return {
-      payload: `WIFI:T:${encryption};S:${escapeWifi(ssid)};P:${escapeWifi(values.password)};H:${values.hidden ? 'true' : 'false'};;`,
+      payload: `WIFI:T:${encryption};S:${escapeWifi(ssid)};P:${escapeWifi(encryption === 'nopass' ? '' : values.password)};H:${values.hidden ? 'true' : 'false'};;`,
     };
   }
 

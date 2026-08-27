@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#f4f0e6" />
     <meta name="description" content="Create permanent static QR codes for URLs, Wi-Fi, contacts, events and text. Export SVG, PNG, PDF or batch ZIP—privately in your browser." />
+    <link rel="canonical" href="https://static-qr-no-signup.sociobot.in/" />
     <title>Static QR — Permanent codes, drawn in your browser</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="preload" as="image" href="/assets/blueprint-desk.webp" type="image/webp" fetchpriority="high" />
+    <link rel="preload" as="image" href="/assets/blueprint-desk.avif" imagesrcset="/assets/blueprint-desk-480.avif 480w, /assets/blueprint-desk.avif 960w" imagesizes="(max-width: 640px) calc(100vw - 68px), (max-width: 960px) calc(100vw - 92px), 48vw" type="image/avif" fetchpriority="high" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to generator</a>
@@ -46,7 +47,8 @@
         <div class="hero-plate" aria-label="Drafting desk showing the process from input to static QR">
           <div class="plate-label">Fig. A — direct payload construction</div>
           <picture>
-            <source srcset="/assets/blueprint-desk.webp" type="image/webp" />
+            <source srcset="/assets/blueprint-desk-480.avif 480w, /assets/blueprint-desk.avif 960w" sizes="(max-width: 640px) calc(100vw - 68px), (max-width: 960px) calc(100vw - 92px), 48vw" type="image/avif" />
+            <source srcset="/assets/blueprint-desk-480.webp 480w, /assets/blueprint-desk.webp 960w" sizes="(max-width: 640px) calc(100vw - 68px), (max-width: 960px) calc(100vw - 92px), 48vw" type="image/webp" />
             <img src="/assets/blueprint-desk.png" width="768" height="512" alt="A blueprint drafting desk with modular square studies, ruler and pencil" fetchpriority="high" decoding="async" />
           </picture>
           <div class="plate-stamp"><span>STATIC</span><small>no redirect</small></div>
@@ -110,7 +112,7 @@
                 </label>
                 <label class="field logo-field">
                   <span>Centre logo <small>PNG, JPEG, WebP or SVG ≤ 1 MB</small></span>
-                  <input type="file" name="logo" id="logo" accept="image/png,image/jpeg,image/webp,image/svg+xml" />
+                  <input type="file" name="logo" id="logo" accept="image/png,image/jpeg,image/webp" />
                 </label>
                 <button class="text-button" type="button" id="remove-logo" hidden>Remove logo</button>
               </div>

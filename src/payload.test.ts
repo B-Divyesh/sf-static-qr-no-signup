@@ -11,6 +11,11 @@ describe('buildPayload', () => {
       .toBe('WIFI:T:WPA;S:Cafe\\;Guest;P:p\\:a\\,ss;H:true;;');
   });
 
+  it('does not retain a password when the network is open', () => {
+    expect(buildPayload({ type: 'wifi', ssid: 'Guest', password: 'old-secret', encryption: 'nopass' }).payload)
+      .toBe('WIFI:T:nopass;S:Guest;P:;H:false;;');
+  });
+
   it('creates a compatible vCard 3 payload', () => {
     const result = buildPayload({ type: 'vcard', firstName: 'Ada', lastName: 'Lovelace', email: 'ada@example.com' });
     expect(result.payload).toContain('BEGIN:VCARD\r\nVERSION:3.0');

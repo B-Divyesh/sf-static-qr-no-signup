@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://static-qr-no-signup.sociobot.in/sitemap.xml

@@ -1,1 +1,48 @@
-# Handoff\n\n(written by the worker at the end of each work order)
+# Handoff — Static QR v1
+
+## What shipped
+
+- A finished, static Vite + TypeScript QR generator at `/` with URL, Wi-Fi, vCard 3.0, iCalendar event and plain-text inputs.
+- Direct static payloads with a verbatim inspector: no shortener, account, analytics, cookie, upload or runtime third-party request.
+- Live QR preview, configurable L/M/Q/H error correction, 0–8 module quiet zone, foreground/background colours, and centre logo upload. Logo mode forces high error correction and is checked by the local decoder.
+- Local `jsQR` verification reports whether the exact payload can be recovered from the rendered code.
+- SVG, 2048 px PNG and 4 × 4 inch vector PDF export. PDF is intentionally disabled while a raster logo is present; SVG/PNG retain the logo.
+- Quoted CSV parser, downloadable template, row-level validation and SVG/PNG batch ZIP generation for up to 500 valid rows. Duplicate filenames receive numeric suffixes.
+- Explicit empty, validation, scan-failure, progress, offline and success states; keyboard-operable tabs and controls; responsive layout tested at 390 px.
+- Offline service-worker shell, strict static-host security headers, `/privacy/` and `/terms/`, robots and sitemap files.
+- Product-specific blueprint drafting-sheet design recorded in `.factory/design.md`. Original hero art was generated with the factory Azure image model; source, prompt sidecars and review are in `assets/src/`. Responsive AVIF/WebP variants ship locally (mobile AVIF: 11 KB).
+
+## Run and verify
+
+```sh
+npm install
+npm test
+npm run build
+npm run preview
+```
+
+Deploy command: `npm run build`. Deploy directory: `dist/` (`dist/index.html` is present).
+
+Optional WCAG smoke test after installing Playwright Chromium and starting preview:
+
+```sh
+npx playwright install chromium
+npm run test:a11y -- http://127.0.0.1:4173
+```
+
+## Verification completed on 2026-08-27
+
+- `npm test`: 13/13 tests passed across payload construction, CSV parsing and SVG/PDF/matrix export.
+- `npm run build`: passed from the checked-in lockfile; Vite output landed in `dist/`.
+- Functional Playwright smoke: URL and escaped Wi-Fi payloads decoded exactly; SVG and two-file batch ZIP downloads completed; no page or console errors.
+- Factory `verify-url.sh`: HTTP 200, title, `lang=en`, one `h1`, main landmark and image alt present; no console errors at desktop or 390 px.
+- Axe Core WCAG 2 A/AA/2.1 AA: 0 violations at 1366 × 900 and 390 × 844.
+- Lighthouse mobile: Performance **99**, Accessibility **100**, Best Practices **100**, SEO **100**. FCP 1.5 s, LCP 1.6 s, CLS 0, total blocking time 0 ms.
+- Production assets: initial application JS 43.46 KB (16.60 KB gzip), CSS 18.11 KB (4.81 KB gzip). Decoder (130.83 KB raw) and ZIP engine (8.89 KB raw) are separate lazy chunks. No font payload.
+
+## Known boundaries / next steps
+
+- vCard and calendar import behavior varies among scanner and calendar apps. Payloads follow vCard 3.0 and RFC-style iCalendar formatting, but physical proofs should be tested on the target devices.
+- The built-in check validates the digital canvas, not print conditions such as paper glare, dot gain, viewing distance or a damaged logo. The interface explicitly advises final physical testing.
+- Vector PDF omits logo support and is disabled when a logo is selected; use SVG or PNG for logo-bearing codes.
+- The application is intentionally free. No billing or product identifier was added.
