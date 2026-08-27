@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#f4f0e6" />
+    <meta name="description" content="Create permanent static QR codes for URLs, Wi-Fi, contacts, events and text. Export SVG, PNG, PDF or batch ZIP—privately in your browser." />
+    <title>Static QR — Permanent codes, drawn in your browser</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" as="image" href="/assets/blueprint-desk.webp" type="image/webp" fetchpriority="high" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to generator</a>
+    <div class="offline-notice" id="offline-notice" role="status" hidden>
+      You’re offline. Good news: generation and downloads still work here.
+    </div>
+    <header class="site-header">
+      <a class="wordmark" href="/" aria-label="Static QR home">
+        <span class="wordmark-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>STATIC / QR</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#generator">Generator</a>
+        <button class="nav-batch" type="button" data-open-batch>Batch CSV</button>
+        <a href="#trust">How it works</a>
+      </nav>
+      <span class="privacy-flag"><span aria-hidden="true">●</span> Local only</span>
+    </header>
+
+    <main id="main">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span>Drawing 001</span> / permanent by design</p>
+          <h1 id="hero-title">Your code.<br /><em>No middleman.</em></h1>
+          <p class="hero-lede">Make a print-ready QR that points straight to your content. No account, no redirect, no expiry date—and nothing leaves this browser.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#generator">Draw a QR <span aria-hidden="true">↓</span></a>
+            <button class="button secondary" type="button" data-open-batch>Build a batch</button>
+          </div>
+          <ul class="proof-strip" aria-label="Product guarantees">
+            <li><strong>0</strong><span>uploads</span></li>
+            <li><strong>5</strong><span>code types</span></li>
+            <li><strong>∞</strong><span>shelf life</span></li>
+          </ul>
+        </div>
+        <div class="hero-plate" aria-label="Drafting desk showing the process from input to static QR">
+          <div class="plate-label">Fig. A — direct payload construction</div>
+          <picture>
+            <source srcset="/assets/blueprint-desk.webp" type="image/webp" />
+            <img src="/assets/blueprint-desk.png" width="768" height="512" alt="A blueprint drafting desk with modular square studies, ruler and pencil" fetchpriority="high" decoding="async" />
+          </picture>
+          <div class="plate-stamp"><span>STATIC</span><small>no redirect</small></div>
+          <div class="dimension dimension-x" aria-hidden="true"><span>payload in</span></div>
+        </div>
+      </section>
+
+      <section class="generator-section" id="generator" aria-labelledby="generator-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Working sheet / 01</p>
+            <h2 id="generator-title">Draw one code</h2>
+          </div>
+          <p>Choose a payload, check the exact contents, then export. Every format contains the same direct, static data.</p>
+        </div>
+
+        <div class="type-tabs" role="tablist" aria-label="QR content type">
+          <button type="button" role="tab" aria-selected="true" data-type="url"><span aria-hidden="true">↗</span> URL</button>
+          <button type="button" role="tab" aria-selected="false" data-type="wifi"><span aria-hidden="true">⌁</span> Wi-Fi</button>
+          <button type="button" role="tab" aria-selected="false" data-type="vcard"><span aria-hidden="true">▣</span> vCard</button>
+          <button type="button" role="tab" aria-selected="false" data-type="event"><span aria-hidden="true">□</span> Event</button>
+          <button type="button" role="tab" aria-selected="false" data-type="text"><span aria-hidden="true">T</span> Text</button>
+        </div>
+
+        <div class="workspace">
+          <form class="editor-sheet" id="qr-form" novalidate>
+            <div class="sheet-index" aria-hidden="true">A</div>
+            <div class="form-heading">
+              <div>
+                <span class="technical-label" id="form-kicker">Destination</span>
+                <h3 id="form-title">Where should it point?</h3>
+              </div>
+              <span class="step-label">Input / live</span>
+            </div>
+            <div id="dynamic-fields"></div>
+            <div class="form-error" id="form-error" role="alert" aria-live="polite"></div>
+
+            <details class="options-drawer">
+              <summary><span>Drawing controls</span><small>Error correction, quiet zone, colours & logo</small></summary>
+              <div class="options-grid">
+                <label class="field">
+                  <span>Error correction <button type="button" class="info-tip" aria-label="About error correction" data-tip="Higher correction makes a denser code but can survive more damage. Use H with a logo.">?</button></span>
+                  <select name="errorLevel" id="error-level">
+                    <option value="L">Low · 7%</option>
+                    <option value="M" selected>Medium · 15%</option>
+                    <option value="Q">Quartile · 25%</option>
+                    <option value="H">High · 30%</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Quiet zone <output id="quiet-output">4 modules</output></span>
+                  <input type="range" name="quietZone" id="quiet-zone" min="0" max="8" value="4" />
+                </label>
+                <label class="field color-field">
+                  <span>Code colour</span>
+                  <input type="color" name="foreground" id="foreground" value="#10283f" />
+                </label>
+                <label class="field color-field">
+                  <span>Paper colour</span>
+                  <input type="color" name="background" id="background" value="#ffffff" />
+                </label>
+                <label class="field logo-field">
+                  <span>Centre logo <small>PNG, JPEG, WebP or SVG ≤ 1 MB</small></span>
+                  <input type="file" name="logo" id="logo" accept="image/png,image/jpeg,image/webp,image/svg+xml" />
+                </label>
+                <button class="text-button" type="button" id="remove-logo" hidden>Remove logo</button>
+              </div>
+              <p class="control-note">For print reliability, keep the quiet zone at 4+ modules. Logo codes automatically use high error correction and are scan-checked.</p>
+            </details>
+          </form>
+
+          <aside class="output-sheet" aria-labelledby="preview-heading">
+            <div class="sheet-index" aria-hidden="true">B</div>
+            <div class="output-heading">
+              <div>
+                <span class="technical-label">Output proof</span>
+                <h3 id="preview-heading">Live drawing</h3>
+              </div>
+              <span class="module-count" id="module-count">— modules</span>
+            </div>
+            <div class="preview-stage" id="preview-stage">
+              <canvas id="qr-canvas" width="512" height="512" aria-label="Generated QR code preview"></canvas>
+              <div class="empty-preview" id="empty-preview">
+                <span class="finder-placeholder" aria-hidden="true"></span>
+                <strong>Waiting for a destination</strong>
+                <p>Your live code appears here as you type.</p>
+              </div>
+              <div class="measurement-mark x-mark" aria-hidden="true"></div>
+              <div class="measurement-mark y-mark" aria-hidden="true"></div>
+            </div>
+            <div class="verify-row" id="verify-status" role="status" aria-live="polite">
+              <span class="verify-dot" aria-hidden="true"></span>
+              <span>Scan check waiting</span>
+            </div>
+            <details class="payload-inspector">
+              <summary>Inspect exact payload <span aria-hidden="true">＋</span></summary>
+              <pre id="payload-output">No payload yet.</pre>
+            </details>
+            <label class="field filename-field">
+              <span>File name</span>
+              <input type="text" id="filename" value="static-qr" maxlength="80" />
+            </label>
+            <div class="download-grid" aria-label="Download formats">
+              <button type="button" class="button primary" id="download-svg" disabled>Download SVG</button>
+              <button type="button" class="button export" id="download-png" disabled>PNG <small>2048 px</small></button>
+              <button type="button" class="button export" id="download-pdf" disabled>PDF <small>4 × 4 in</small></button>
+            </div>
+            <p class="export-note">SVG is best for signs and professional print. PNG works for documents and social posts.</p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="batch-section" id="batch" aria-labelledby="batch-title" hidden>
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Working sheet / 02</p>
+            <h2 id="batch-title">Build a batch</h2>
+          </div>
+          <button class="close-batch" type="button" id="close-batch">Close batch <span aria-hidden="true">×</span></button>
+        </div>
+        <div class="batch-workspace">
+          <div class="batch-input">
+            <h3>CSV manifest</h3>
+            <p>One row becomes one static file. Up to 500 rows, entirely in this browser.</p>
+            <div class="drop-zone" id="drop-zone">
+              <input type="file" id="csv-file" accept=".csv,text/csv" />
+              <label for="csv-file"><strong>Choose a CSV</strong><span>or drop it on this sheet</span><small>UTF-8 · max 500 rows</small></label>
+            </div>
+            <button class="text-button" type="button" id="download-template">Download CSV template</button>
+            <details class="column-guide">
+              <summary>See accepted columns</summary>
+              <p><code>filename, type, url, text, ssid, password, encryption, hidden, first_name, last_name, phone, email, organization, event_title, start, end, location, description</code></p>
+            </details>
+          </div>
+          <div class="batch-output">
+            <div class="batch-summary" id="batch-summary">
+              <span class="large-number">00</span>
+              <div><strong>Codes on the sheet</strong><span>Upload a CSV to inspect it.</span></div>
+            </div>
+            <div class="batch-errors" id="batch-errors" role="alert" aria-live="polite"></div>
+            <label class="field">
+              <span>Files inside ZIP</span>
+              <select id="batch-format"><option value="svg">SVG · print/vector</option><option value="png">PNG · 1024 px</option></select>
+            </label>
+            <button class="button primary full-width" type="button" id="build-batch" disabled>Build ZIP</button>
+            <div class="batch-progress" id="batch-progress" role="status" aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="trust-section" id="trust" aria-labelledby="trust-title">
+        <div class="trust-heading">
+          <p class="eyebrow">Construction notes</p>
+          <h2 id="trust-title">A QR should be boring infrastructure.</h2>
+          <p>We mean that as a compliment. Once printed, your code should keep working without us.</p>
+        </div>
+        <ol class="process-list">
+          <li><span>01</span><div><h3>Your data stays here</h3><p>Generation, scan verification and batch ZIP creation all run locally. Open developer tools and watch: no payload request is sent.</p></div></li>
+          <li><span>02</span><div><h3>The payload is direct</h3><p>The code contains exactly the URL, Wi-Fi details, contact, event or text shown in the inspector—never our redirect.</p></div></li>
+          <li><span>03</span><div><h3>The file is yours</h3><p>SVG, PNG and PDF downloads have no expiry switch. Keep the destination online and the printed code keeps working.</p></div></li>
+        </ol>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-mark"><span class="wordmark-mark" aria-hidden="true"><i></i><i></i><i></i></span><strong>STATIC / QR</strong></div>
+      <p>Permanent QR drawings, made locally. No signup. No tracking. No hostage links.</p>
+      <nav aria-label="Legal"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="https://github.com/B-Divyesh/sf-static-qr-no-signup" rel="noreferrer">Source</a></nav>
+      <small>© 2026 Sociobot · Hero illustration generated with Azure AI; functional QR output is always produced locally.</small>
+    </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
