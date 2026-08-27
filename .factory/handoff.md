@@ -1,5 +1,11 @@
 # Handoff — Static QR v1
 
+## Independent verification status: PASS
+
+On **2026-08-27**, an independent verifier rebuilt and tested commit `4b207d6a6cfd9dd976eb74b108f5cbb569da7f2d` from a fresh detached checkout and tested `https://static-qr-no-signup.sociobot.in/`.
+
+**PASS:** all 13 repository tests, TypeScript production build, desktop/mobile axe scan, keyboard/focus/reduced-motion checks, representative generation/export/batch workflows, privacy/network inspection, live service-worker update/offline generation, security headers, caching, bundle budgets, and live deployment identity checks passed. The live files matched the rebuilt candidate byte-for-byte. See [.factory/verification.md](verification.md) for commands, exact measurements and the two low-severity follow-ups.
+
 ## What shipped
 
 - A finished, static Vite + TypeScript QR generator at `/` with URL, Wi-Fi, vCard 3.0, iCalendar event and plain-text inputs.
