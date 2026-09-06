@@ -5,8 +5,8 @@
 All six review findings are fixed and deployed. The static QR generator now has a real one-click sample sandbox, an executable claim manifest, plain first-screen copy, a designed HTTP 404 page, an SVG-capable logo picker, and a true 4 × 4 inch PDF page.
 
 - Runtime implementation SHA: `eaea1152595a2ff7e4ae44be929e551f42165a1a`
-- Handoff documentation SHA: `b86602b265943fc741ece968c91ae73106cff7cb`
-- Documentation and verification evidence SHA: `38f21e805e8c7c4a32d7d1b7fa94ad03755c7810`
+- Handoff documentation SHA: `6b242543d863468489f69aa05209ed4b2e683ca9`
+- Documentation and verification evidence SHA: `6b242543d863468489f69aa05209ed4b2e683ca9`
 - Live URL: https://static-qr-no-signup.sociobot.in
 - Deployed artifact identity: live `index.html` and `sw.js` SHA-256 exactly match the build from the runtime implementation SHA. Exact hashes and checks are in [repair-evidence.md](repair-evidence.md).
 
