@@ -4,10 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#f4f0e6" />
-    <meta name="description" content="Create permanent static QR codes for URLs, Wi-Fi, contacts, events and text. Export SVG, PNG, PDF or batch ZIP—privately in your browser." />
+    <meta name="description" content="Create direct QR codes for URLs, Wi-Fi, contacts, events and text. Download SVG, PNG, PDF or a batch ZIP locally." />
     <link rel="canonical" href="https://static-qr-no-signup.sociobot.in/" />
-    <title>Static QR — Permanent codes, drawn in your browser</title>
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://static-qr-no-signup.sociobot.in/" />
+    <meta property="og:title" content="Static QR — Create direct QR codes" />
+    <meta property="og:description" content="Create direct QR codes and download SVG, PNG, PDF or a batch ZIP locally." />
+    <meta property="og:image" content="https://static-qr-no-signup.sociobot.in/assets/static-qr-social.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Static QR — Create direct QR codes" />
+    <meta name="twitter:description" content="Create direct QR codes and download SVG, PNG, PDF or a batch ZIP locally." />
+    <meta name="twitter:image" content="https://static-qr-no-signup.sociobot.in/assets/static-qr-social.jpg" />
+    <title>Static QR — Create direct QR codes</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="preload" as="image" href="/assets/blueprint-desk.avif" imagesrcset="/assets/blueprint-desk-480.avif 480w, /assets/blueprint-desk.avif 960w" imagesizes="(max-width: 640px) calc(100vw - 68px), (max-width: 960px) calc(100vw - 92px), 48vw" type="image/avif" fetchpriority="high" />
   </head>
   <body>
@@ -21,27 +33,34 @@
         <span>STATIC / QR</span>
       </a>
       <nav aria-label="Primary navigation">
+        <a href="/demo">Demo</a>
         <a href="#generator">Generator</a>
         <button class="nav-batch" type="button" data-open-batch>Batch CSV</button>
-        <a href="#trust">How it works</a>
+        <a href="/privacy/">Privacy</a>
       </nav>
       <span class="privacy-flag"><span aria-hidden="true">●</span> Local only</span>
     </header>
 
-    <main id="main">
-      <section class="hero" aria-labelledby="hero-title">
+    <aside class="demo-banner" id="demo-banner" aria-label="Demo controls" hidden>
+      <span><strong>Demo</strong> — sample data, nothing is saved</span>
+      <span class="demo-actions"><button type="button" class="text-button" id="reset-demo">Reset demo</button><a href="/" id="start-real">Start for real</a></span>
+    </aside>
+
+    <main id="main" tabindex="-1">
+      <section class="hero" id="landing-hero" aria-labelledby="hero-title">
         <div class="hero-copy">
-          <p class="eyebrow"><span>Drawing 001</span> / permanent by design</p>
-          <h1 id="hero-title">Your code.<br /><em>No middleman.</em></h1>
-          <p class="hero-lede">Make a print-ready QR that points straight to your content. No account, no redirect, no expiry date—and nothing leaves this browser.</p>
+          <p class="eyebrow"><span>Static QR</span> / direct payloads</p>
+          <h1 id="hero-title">Create a direct<br /><em>QR code</em></h1>
+          <p class="hero-lede">For shops, events, and people who need a print-ready code without an account or redirect.</p>
           <div class="hero-actions">
-            <a class="button primary" href="#generator">Draw a QR <span aria-hidden="true">↓</span></a>
-            <button class="button secondary" type="button" data-open-batch>Build a batch</button>
+            <a class="button primary" href="/demo">Try it with sample data <span aria-hidden="true">→</span></a>
+            <a class="button secondary" href="#generator">Create my QR <span aria-hidden="true">↓</span></a>
           </div>
-          <ul class="proof-strip" aria-label="Product guarantees">
-            <li><strong>0</strong><span>uploads</span></li>
-            <li><strong>5</strong><span>code types</span></li>
-            <li><strong>∞</strong><span>shelf life</span></li>
+          <p class="first-action-note">Loads a café menu QR you can inspect and download.</p>
+          <ul class="proof-strip" aria-label="Product facts">
+            <li><strong>Free</strong><span>no account</span></li>
+            <li><strong>Local</strong><span>no upload</span></li>
+            <li><strong>Offline</strong><span>after first visit</span></li>
           </ul>
         </div>
         <div class="hero-plate" aria-label="Drafting desk showing the process from input to static QR">
@@ -56,13 +75,19 @@
         </div>
       </section>
 
+      <section class="demo-intro" id="demo-intro" aria-labelledby="demo-title" hidden>
+        <p class="eyebrow"><span>Demo</span> / sample café menu</p>
+        <div id="demo-title-anchor"></div>
+        <p>See a populated direct QR before entering your own details.</p>
+      </section>
+
       <section class="generator-section" id="generator" aria-labelledby="generator-title">
         <div class="section-heading">
           <div>
             <p class="eyebrow">Working sheet / 01</p>
             <h2 id="generator-title">Draw one code</h2>
           </div>
-          <p>Choose a payload, check the exact contents, then export. Every format contains the same direct, static data.</p>
+          <p>Choose a payload, inspect its exact contents, then download the format you need.</p>
         </div>
 
         <div class="type-tabs" role="tablist" aria-label="QR content type">
@@ -90,7 +115,7 @@
               <summary><span>Drawing controls</span><small>Error correction, quiet zone, colours & logo</small></summary>
               <div class="options-grid">
                 <label class="field">
-                  <span>Error correction <button type="button" class="info-tip" aria-label="About error correction" data-tip="Higher correction makes a denser code but can survive more damage. Use H with a logo.">?</button></span>
+                  <span>Error correction <button type="button" class="info-tip" aria-label="About error correction" data-tip="Choose high correction when you add a logo. The app selects it automatically.">?</button></span>
                   <select name="errorLevel" id="error-level">
                     <option value="L">Low · 7%</option>
                     <option value="M" selected>Medium · 15%</option>
@@ -112,11 +137,11 @@
                 </label>
                 <label class="field logo-field">
                   <span>Centre logo <small>PNG, JPEG, WebP or SVG ≤ 1 MB</small></span>
-                  <input type="file" name="logo" id="logo" accept="image/png,image/jpeg,image/webp" />
+                  <input type="file" name="logo" id="logo" accept="image/png,image/jpeg,image/webp,image/svg+xml" />
                 </label>
                 <button class="text-button" type="button" id="remove-logo" hidden>Remove logo</button>
               </div>
-              <p class="control-note">For print reliability, keep the quiet zone at 4+ modules. Logo codes automatically use high error correction and are scan-checked.</p>
+              <p class="control-note">Use a quiet zone of 4 or more modules for print. Logo codes use high error correction and are scan-checked.</p>
             </details>
           </form>
 
@@ -154,7 +179,7 @@
             <div class="download-grid" aria-label="Download formats">
               <button type="button" class="button primary" id="download-svg" disabled>Download SVG</button>
               <button type="button" class="button export" id="download-png" disabled>PNG <small>2048 px</small></button>
-              <button type="button" class="button export" id="download-pdf" disabled>PDF <small>4 × 4 in</small></button>
+              <button type="button" class="button export" id="download-pdf" disabled>PDF <small>4 × 4 in page</small></button>
             </div>
             <p class="export-note">SVG is best for signs and professional print. PNG works for documents and social posts.</p>
           </aside>
@@ -172,7 +197,7 @@
         <div class="batch-workspace">
           <div class="batch-input">
             <h3>CSV manifest</h3>
-            <p>One row becomes one static file. Up to 500 rows, entirely in this browser.</p>
+            <p>One row becomes one QR file. Upload up to 500 rows.</p>
             <div class="drop-zone" id="drop-zone">
               <input type="file" id="csv-file" accept=".csv,text/csv" />
               <label for="csv-file"><strong>Choose a CSV</strong><span>or drop it on this sheet</span><small>UTF-8 · max 500 rows</small></label>
@@ -201,23 +226,23 @@
 
       <section class="trust-section" id="trust" aria-labelledby="trust-title">
         <div class="trust-heading">
-          <p class="eyebrow">Construction notes</p>
-          <h2 id="trust-title">A QR should be boring infrastructure.</h2>
-          <p>We mean that as a compliment. Once printed, your code should keep working without us.</p>
+          <p class="eyebrow">How it works</p>
+          <h2 id="trust-title">Make and check a static QR</h2>
+          <p>Use the inspector and scan check before you print or share the file.</p>
         </div>
         <ol class="process-list">
-          <li><span>01</span><div><h3>Your data stays here</h3><p>Generation, scan verification and batch ZIP creation all run locally. Open developer tools and watch: no payload request is sent.</p></div></li>
-          <li><span>02</span><div><h3>The payload is direct</h3><p>The code contains exactly the URL, Wi-Fi details, contact, event or text shown in the inspector—never our redirect.</p></div></li>
-          <li><span>03</span><div><h3>The file is yours</h3><p>SVG, PNG and PDF downloads have no expiry switch. Keep the destination online and the printed code keeps working.</p></div></li>
+          <li><span>01</span><div><h3>Enter the details</h3><p>Choose a type and enter the website, Wi-Fi details, contact, event, or text.</p></div></li>
+          <li><span>02</span><div><h3>Check the exact payload</h3><p>Inspect the direct data inside the QR. The app does not add a redirect.</p></div></li>
+          <li><span>03</span><div><h3>Download and test it</h3><p>Download SVG, PNG, or PDF. Scan the final printed proof with the devices you expect people to use.</p></div></li>
         </ol>
       </section>
     </main>
 
     <footer class="site-footer">
       <div class="footer-mark"><span class="wordmark-mark" aria-hidden="true"><i></i><i></i><i></i></span><strong>STATIC / QR</strong></div>
-      <p>Permanent QR drawings, made locally. No signup. No tracking. No hostage links.</p>
+      <p>Direct QR codes for print, sharing, and local batch work.</p>
       <nav aria-label="Legal"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="https://github.com/B-Divyesh/sf-static-qr-no-signup" rel="noreferrer">Source</a></nav>
-      <small>© 2026 Sociobot · Hero illustration generated with Azure AI; functional QR output is always produced locally.</small>
+      <small>Built by Param Factory · Hero illustration generated with Azure AI · Version 1.1.0</small>
     </footer>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>

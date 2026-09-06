@@ -1,0 +1,128 @@
+[
+  {
+    "id": "demo-sandbox",
+    "claim": "Try it with sample data loads a completed QR and discards the demo when you start for real.",
+    "where": "landing action, demo banner, README",
+    "test": "npm run test:claims -- --grep @claim:demo-sandbox",
+    "sandbox": "fresh browser context at /demo; sample QR is visible; reset restores it; Start for real clears the demo marker"
+  },
+  {
+    "id": "free-download",
+    "claim": "Downloads are free to use.",
+    "where": "landing facts, README",
+    "test": "npm run test:claims -- --grep @claim:free-download",
+    "sandbox": "fresh browser context at /demo; download an SVG without account or payment"
+  },
+  {
+    "id": "no-account",
+    "claim": "No account is required to create and download a QR.",
+    "where": "landing sentence and facts, README",
+    "test": "npm run test:claims -- --grep @claim:no-account",
+    "sandbox": "fresh browser context at /demo; create and download the sample QR without an account prompt"
+  },
+  {
+    "id": "local-processing",
+    "claim": "QR data is processed in this browser without payload uploads.",
+    "where": "landing facts, privacy page, README",
+    "test": "npm run test:claims -- --grep @claim:local-processing",
+    "sandbox": "fresh browser context at /demo; record all HTTP(S) requests while generating and downloading"
+  },
+  {
+    "id": "direct-payload",
+    "claim": "The QR contains the inspected data directly and does not add an application redirect.",
+    "where": "How it works, payload inspector, terms",
+    "test": "npm run test:claims -- --grep @claim:direct-payload",
+    "sandbox": "fresh browser context at /demo; compare the sample payload inspector and local decoder result"
+  },
+  {
+    "id": "five-code-types",
+    "claim": "Creates QR codes for URLs, Wi-Fi, contacts, events, and text.",
+    "where": "meta description, generator tabs, README",
+    "test": "npm run test:claims -- --grep @claim:five-code-types",
+    "sandbox": "fresh browser context at /demo; create a payload for every listed type"
+  },
+  {
+    "id": "svg-download",
+    "claim": "Downloads SVG QR files.",
+    "where": "download button, README",
+    "test": "npm run test:claims -- --grep @claim:svg-download",
+    "sandbox": "fresh browser context at /demo; download and inspect a self-contained SVG"
+  },
+  {
+    "id": "png-2048-download",
+    "claim": "Downloads 2048 px PNG QR files.",
+    "where": "download button, README",
+    "test": "npm run test:claims -- --grep @claim:png-2048-download",
+    "sandbox": "fresh browser context at /demo; download a PNG and read its dimensions"
+  },
+  {
+    "id": "pdf-4in-download",
+    "claim": "Downloads a vector PDF on a 4 × 4 inch page.",
+    "where": "download button, README",
+    "test": "npm run test:claims -- --grep @claim:pdf-4in-download",
+    "sandbox": "fresh browser context at /demo; download the PDF and inspect its MediaBox"
+  },
+  {
+    "id": "logo-scan-check",
+    "claim": "A centre logo uses high error correction and is checked with a local decoder.",
+    "where": "drawing controls, README",
+    "test": "npm run test:claims -- --grep @claim:logo-scan-check",
+    "sandbox": "fresh browser context at /demo; add a local PNG logo and wait for decoder verification"
+  },
+  {
+    "id": "csv-batch-500",
+    "claim": "Builds a ZIP from a CSV batch of up to 500 QR files.",
+    "where": "batch workspace, README",
+    "test": "npm run test:claims -- --grep @claim:csv-batch-500",
+    "sandbox": "fresh browser context at /demo; build and inspect a 500-file SVG ZIP"
+  },
+  {
+    "id": "batch-png-1024",
+    "claim": "Builds 1024 px PNG files in a CSV batch ZIP.",
+    "where": "batch format selector, README",
+    "test": "npm run test:claims -- --grep @claim:batch-png-1024",
+    "sandbox": "fresh browser context at /demo; build a PNG ZIP and inspect one file’s dimensions"
+  },
+  {
+    "id": "offline-after-first-visit",
+    "claim": "Works offline after the first visit.",
+    "where": "landing facts, privacy page, README",
+    "test": "npm run test:claims -- --grep @claim:offline-after-first-visit",
+    "sandbox": "new browser context at /demo; wait for service worker control, set offline, reload, and generate"
+  },
+  {
+    "id": "no-cookies",
+    "claim": "Uses no cookies.",
+    "where": "privacy page, README",
+    "test": "npm run test:claims -- --grep @claim:no-cookies",
+    "sandbox": "fresh browser context at /demo; inspect response headers, browser cookies, and document.cookie"
+  },
+  {
+    "id": "no-analytics",
+    "claim": "Uses no analytics or advertising pixels.",
+    "where": "privacy page, README",
+    "test": "npm run test:claims -- --grep @claim:no-analytics",
+    "sandbox": "fresh browser context at /demo; inspect all runtime requests during a generation flow"
+  },
+  {
+    "id": "no-third-party-runtime",
+    "claim": "Loads no third-party runtime scripts, fonts, or generation services.",
+    "where": "privacy page, README",
+    "test": "npm run test:claims -- --grep @claim:no-third-party-runtime",
+    "sandbox": "fresh browser context at /demo; assert every HTTP(S) request uses the product origin"
+  },
+  {
+    "id": "no-payload-retention",
+    "claim": "The page does not retain real QR input after reload.",
+    "where": "privacy page, README",
+    "test": "npm run test:claims -- --grep @claim:no-payload-retention",
+    "sandbox": "fresh browser context at /; enter real input, reload, and confirm it is gone"
+  },
+  {
+    "id": "no-local-storage",
+    "claim": "The app does not store QR payloads in local storage.",
+    "where": "privacy page, README",
+    "test": "npm run test:claims -- --grep @claim:no-local-storage",
+    "sandbox": "fresh browser context at /; enter real input and inspect local storage"
+  }
+]

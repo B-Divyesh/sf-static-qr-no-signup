@@ -21,6 +21,24 @@ const buttons = {
   pdf: document.querySelector<HTMLButtonElement>('#download-pdf')!,
 };
 
+const DEMO_STORAGE_KEY = 'demo:static-qr:active';
+const SAMPLE_URL = 'https://north-pier-coffee.example/menu?location=market-square';
+const landingHero = document.querySelector<HTMLElement>('#landing-hero')!;
+const demoIntro = document.querySelector<HTMLElement>('#demo-intro')!;
+const demoBanner = document.querySelector<HTMLElement>('#demo-banner')!;
+const heroTitle = document.querySelector<HTMLElement>('#hero-title')!;
+const demoTitleAnchor = document.querySelector<HTMLElement>('#demo-title-anchor')!;
+function hasDemoMarker(): boolean {
+  try {
+    return sessionStorage.getItem(DEMO_STORAGE_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+let demoMode = window.location.pathname.replace(/\/$/, '') === '/demo'
+  || new URLSearchParams(window.location.search).get('demo') === '1'
+  || (!navigator.onLine && hasDemoMarker());
+
 let currentType: CodeType = 'url';
 let currentPayload = '';
 let logoData = '';
@@ -62,7 +80,7 @@ const fieldTemplates: Record<CodeType, { kicker: string; title: string; html: st
   },
 };
 
-function setType(type: CodeType): void {
+function setType(type: CodeType, focusField = true): void {
   currentType = type;
   const template = fieldTemplates[type];
   formKicker.textContent = template.kicker;
@@ -70,7 +88,7 @@ function setType(type: CodeType): void {
   fields.innerHTML = template.html;
   document.querySelectorAll<HTMLButtonElement>('[data-type]').forEach((button) => button.setAttribute('aria-selected', String(button.dataset.type === type)));
   const first = fields.querySelector<HTMLElement>('input, textarea, select');
-  first?.focus({ preventScroll: true });
+  if (focusField) first?.focus({ preventScroll: true });
   update();
 }
 
@@ -190,6 +208,11 @@ const removeLogo = document.querySelector<HTMLButtonElement>('#remove-logo')!;
 logoInput.addEventListener('change', () => {
   const file = logoInput.files?.[0];
   if (!file) return;
+  if (!['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml'].includes(file.type)) {
+    formError.textContent = 'Choose a PNG, JPEG, WebP, or SVG logo.';
+    logoInput.value = '';
+    return;
+  }
   if (file.size > 1_000_000) {
     formError.textContent = 'The logo is over 1 MB. Choose a smaller image.';
     logoInput.value = '';
@@ -314,4 +337,65 @@ if ('serviceWorker' in navigator && import.meta.env.PROD) {
   window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => undefined));
 }
 
-setType('url');
+function storeDemoMarker(): void {
+  try {
+    sessionStorage.setItem(DEMO_STORAGE_KEY, '1');
+  } catch {
+    // Demo data remains in memory if browser storage is unavailable.
+  }
+}
+
+function discardDemoMarker(): void {
+  try {
+    sessionStorage.removeItem(DEMO_STORAGE_KEY);
+  } catch {
+    // There is no persisted demo data to remove when storage is unavailable.
+  }
+}
+
+function resetDemo(): void {
+  logoData = '';
+  logoInput.value = '';
+  removeLogo.hidden = true;
+  document.querySelector<HTMLSelectElement>('#error-level')!.value = 'M';
+  document.querySelector<HTMLInputElement>('#quiet-zone')!.value = '4';
+  document.querySelector<HTMLInputElement>('#foreground')!.value = '#10283f';
+  document.querySelector<HTMLInputElement>('#background')!.value = '#ffffff';
+  filenameInput.value = 'north-pier-coffee-menu';
+  batchRows = [];
+  batchSection.hidden = true;
+  batchErrors.textContent = '';
+  batchProgress.textContent = '';
+  buildBatch.disabled = true;
+  batchSummary.innerHTML = '<span class="large-number">00</span><div><strong>Codes on the sheet</strong><span>Upload a CSV to inspect it.</span></div>';
+  setType('url', false);
+  const url = fields.querySelector<HTMLInputElement>('#url')!;
+  url.value = SAMPLE_URL;
+  update();
+}
+
+function setDemoMode(): void {
+  document.body.classList.toggle('demo-mode', demoMode);
+  landingHero.hidden = demoMode;
+  demoIntro.hidden = !demoMode;
+  demoBanner.hidden = !demoMode;
+  if (demoMode) {
+    document.title = 'Demo — Static QR';
+    heroTitle.id = 'demo-title';
+    heroTitle.textContent = 'Create a QR with sample data';
+    demoTitleAnchor.replaceWith(heroTitle);
+    storeDemoMarker();
+    resetDemo();
+  } else {
+    discardDemoMarker();
+    setType('url', false);
+  }
+}
+
+document.querySelector<HTMLButtonElement>('#reset-demo')!.addEventListener('click', () => {
+  resetDemo();
+  showToast('Sample data restored.');
+});
+document.querySelector<HTMLAnchorElement>('#start-real')!.addEventListener('click', discardDemoMarker);
+
+setDemoMode();

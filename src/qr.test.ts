@@ -17,9 +17,11 @@ describe('QR exports', () => {
     expect(svg).not.toContain('http://example');
   });
 
-  it('creates a vector PDF file', async () => {
+  it('creates a 4 by 4 inch vector PDF page', async () => {
     const blob = createPdf('hello', DEFAULT_OPTIONS);
     expect(blob.type).toBe('application/pdf');
-    expect(await blob.text()).toMatch(/^%PDF-1.4/);
+    const pdf = await blob.text();
+    expect(pdf).toMatch(/^%PDF-1.4/);
+    expect(pdf).toContain('/MediaBox [0 0 288 288]');
   });
 });

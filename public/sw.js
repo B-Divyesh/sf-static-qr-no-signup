@@ -1,5 +1,5 @@
-const CACHE = 'static-qr-shell-v1';
-const SHELL = ['/', '/privacy/', '/terms/', '/favicon.svg', '/assets/blueprint-desk-480.webp'];
+const CACHE = 'static-qr-shell-v3';
+const SHELL = __SHELL__;
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(SHELL)).then(() => self.skipWaiting()));
@@ -9,7 +9,7 @@ self.addEventListener('activate', (event) => {
 });
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET' || new URL(event.request.url).origin !== self.location.origin) return;
-  event.respondWith(caches.match(event.request).then((cached) => cached || fetch(event.request).then((response) => {
+  event.respondWith(caches.match(event.request, { ignoreVary: true }).then((cached) => cached || fetch(event.request).then((response) => {
     if (response.ok) caches.open(CACHE).then((cache) => cache.put(event.request, response.clone()));
     return response;
   })));

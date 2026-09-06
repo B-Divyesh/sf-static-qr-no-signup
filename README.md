@@ -1,36 +1,43 @@
 # Static QR
 
-A private, no-signup static QR generator for small businesses, event organisers and anyone who wants a permanent code without a tracking redirect. It creates URL, Wi-Fi, vCard 3.0, calendar event and plain-text codes, plus batches from CSV.
+Create direct QR codes for shops, events, and people who need a print-ready code without an account or redirect. It creates URL, Wi-Fi, contact, event, and text QR codes, plus batches from CSV.
 
 Live: https://static-qr-no-signup.sociobot.in
 
 ## What it does
 
-- Draws the exact payload in the browser; no generation request or payload upload.
-- Exports print-ready SVG, 2048 px PNG and 4 × 4 inch vector PDF.
-- Adds an optional centre logo, switches to high error correction, and scan-checks the result with a local decoder.
-- Turns up to 500 CSV rows into an SVG or PNG ZIP.
-- Works after first load when offline through a small service-worker cache.
-- Uses no accounts, cookies, analytics, third-party scripts, fonts or runtime CDNs.
+- Starts with a one-click sample at [`/demo`](https://static-qr-no-signup.sociobot.in/demo). The sample is marked as demo data and is discarded when you start for real.
+- Processes QR data in the browser without payload uploads. It uses no account, cookies, analytics, advertising pixels, or third-party runtime resources.
+- Shows the exact direct payload. It does not add an application redirect.
+- Downloads SVG, 2048 px PNG, and vector PDF files on a 4 × 4 inch page.
+- Lets you add a PNG, JPEG, WebP, or SVG centre logo. Logo QR codes use high error correction and a local decoder check.
+- Builds SVG or 1024 px PNG ZIP files from CSV batches of up to 500 rows.
+- Works offline after the first visit. Real QR input is not retained after reload.
 
-The payload inspector is the source of truth for what the QR contains. Static codes cannot be edited after printing, so always scan-test the final physical proof.
+Check the exact payload and scan the final printed proof with the devices your audience uses.
 
 ## Develop and verify
 
 Requires Node.js 20 or later.
 
 ```sh
-npm install
+npm ci
 npm run dev
 npm test
 npm run build       # production output -> dist/
 npm run preview
 ```
 
-For the optional accessibility smoke test, install Playwright Chromium once, run the preview server, then test it:
+For browser claim tests, install the pinned Playwright Chromium once and run:
 
 ```sh
 npx playwright install chromium
+npm run test:claims
+```
+
+For the accessibility smoke test, run the preview server, then:
+
+```sh
 npm run test:a11y -- http://127.0.0.1:4173
 ```
 
@@ -50,7 +57,7 @@ CSV quoting and escaped quotes are supported. Invalid rows are identified before
 
 ## Architecture and privacy
 
-Vite builds a vanilla TypeScript application. `qrcode-generator` constructs matrices, `jsQR` is lazy-loaded for local scan verification, and `fflate` is lazy-loaded for ZIP creation. There is no backend. See [the visual thesis](.factory/design.md), [privacy policy](privacy/index.html), and [terms](terms/index.html).
+Vite builds a vanilla TypeScript application. `qrcode-generator` constructs matrices, `jsQR` checks QR previews locally, and `fflate` creates ZIP files. There is no backend. See [the demo notes](.factory/demo.md), [the claim manifest](.factory/claims.json), [the visual thesis](.factory/design.md), [privacy policy](privacy/index.html), and [terms](terms/index.html).
 
 ## License
 

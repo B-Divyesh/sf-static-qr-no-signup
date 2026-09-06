@@ -63,8 +63,8 @@ export function createSvg(payload: string, options: QrOptions, title = 'Static Q
 export function drawCanvas(canvas: HTMLCanvasElement, payload: string, options: QrOptions, pixels = 1024): QrMatrix {
   const matrix = createMatrix(payload, options.errorLevel);
   const units = matrix.count + options.quietZone * 2;
-  const scale = Math.max(1, Math.floor(pixels / units));
-  const size = units * scale;
+  const size = Math.max(1, Math.round(pixels));
+  const scale = size / units;
   canvas.width = size;
   canvas.height = size;
   const context = canvas.getContext('2d', { willReadFrequently: true });
@@ -74,7 +74,12 @@ export function drawCanvas(canvas: HTMLCanvasElement, payload: string, options: 
   context.fillRect(0, 0, size, size);
   context.fillStyle = options.foreground;
   matrix.modules.forEach((row, y) => row.forEach((dark, x) => {
-    if (dark) context.fillRect((x + options.quietZone) * scale, (y + options.quietZone) * scale, scale, scale);
+    if (!dark) return;
+    const left = Math.round((x + options.quietZone) * scale);
+    const top = Math.round((y + options.quietZone) * scale);
+    const right = Math.round((x + options.quietZone + 1) * scale);
+    const bottom = Math.round((y + options.quietZone + 1) * scale);
+    context.fillRect(left, top, right - left, bottom - top);
   }));
   if (options.logo) {
     const image = new Image();
@@ -100,11 +105,11 @@ export async function canvasBlob(canvas: HTMLCanvasElement): Promise<Blob> {
 
 export function createPdf(payload: string, options: QrOptions): Blob {
   const matrix = createMatrix(payload, options.errorLevel);
-  const page = 360;
-  const qrSize = 288;
+  const page = 288;
+  const qrSize = page;
   const units = matrix.count + options.quietZone * 2;
   const unit = qrSize / units;
-  const offset = (page - qrSize) / 2;
+  const offset = 0;
   const rgb = hexRgb(options.foreground);
   const background = hexRgb(options.background);
   const commands = [`${background.join(' ')} rg`, `0 0 ${page} ${page} re f`, `${rgb.join(' ')} rg`];

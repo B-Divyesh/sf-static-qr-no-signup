@@ -57,6 +57,7 @@ System stacks are intentional: privacy, instant rendering, and zero font bytes a
 - Hero: an original generated editorial still life of a QR drafting desk, used as a contextual blueprint-world illustration rather than evidence of functionality. It must contain no readable text, logos, brands, people, or fake UI. The actual live QR beside it is rendered by the app.
 - Icons, registration marks, rulers, grid, and verification seal are hand-authored CSS/SVG and MIT-licensed with the application.
 - Generated imagery disclosure appears in the footer.
+- The 1200 × 630 social preview and 180 × 180 Apple touch icon are local crops of the approved hero source, made with ImageMagick on 2026-09-06. They introduce no new generated subject or licence.
 
 ### Image prompt sheet
 

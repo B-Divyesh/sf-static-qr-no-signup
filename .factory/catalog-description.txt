@@ -1,0 +1,1 @@
+Create direct QR codes and download SVG, PNG, PDF, or batch ZIP files without an account or redirect.
