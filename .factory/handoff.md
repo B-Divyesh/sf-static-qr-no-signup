@@ -1,5 +1,13 @@
 # Handoff — Static QR repair 1
 
+## Independent verification 2
+
+**PASS — zero findings and zero untested public claims.** Independent verification completed on 2026-09-06 against runtime implementation `eaea1152595a2ff7e4ae44be929e551f42165a1a` and documentation evidence `6b242543d863468489f69aa05209ed4b2e683ca9`. The current `7cbee828cdd9a03010ad0ece1c1938a7205abf23` revision is report-only.
+
+A fresh detached candidate checkout passed `npm ci`, `npm test` (13/13), `npm run build`, all 18 individual declared claim commands, and the complete browser suite (23/23). The live desktop and phone demo, offline reload, HTTPS/security headers, links, legal routes, styled HTTP 404, and axe accessibility smoke checks passed. The rebuilt candidate and live `index.html` and `sw.js` match byte-for-byte. Full evidence is in [verification-2.md](verification-2.md).
+
+No product code changed during this verification. Run the commands in **Run and verify** below to reproduce the local checks.
+
 ## Status
 
 All six review findings are fixed and deployed. The static QR generator now has a real one-click sample sandbox, an executable claim manifest, plain first-screen copy, a designed HTTP 404 page, an SVG-capable logo picker, and a true 4 × 4 inch PDF page.
