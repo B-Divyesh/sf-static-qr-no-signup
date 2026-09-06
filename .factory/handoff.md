@@ -1,18 +1,27 @@
-# Handoff — Static QR repair 2
+# Handoff — Static QR verification 3
 
 ## Status
 
-Strict review 2’s two findings are fixed, tested, pushed, deployed, and checked cold at https://static-qr-no-signup.sociobot.in.
+Independent verification 3 passed at https://static-qr-no-signup.sociobot.in. No product code was changed during this verification.
 
 - Runtime implementation SHA: `5046c607ef36aa628e432251c48904c25cd37632`
-- Copy-audit documentation SHA: `bf01fd1e05a6d39dfdc20b0e4fdc8fb60d67b297`
+- Documentation base SHA: `e1ac7123fac3adc9ca8aeaef3146e3f3330a7ad9`
 - Branch: `main`
 - Product resource changed: only `sf-static-qr-no-signup`
 - Billing: not applicable; the product remains free and has no paid offer
 
 Later handoff and evidence commits are documentation-only. The deployed `dist/` artifact comes from the runtime implementation above.
 
-## What changed
+## Verification 3
+
+- Fresh desktop and phone browsers showed the job, audience, and **Try it with sample data** before scrolling.
+- The North Pier Coffee demo was populated, labelled, decoder-verified, resettable, and cleared on Start for real without retaining real input.
+- All 23 declared claim commands passed separately from a clean checkout. The complete browser suite passed 29/29; unit tests passed 13/13.
+- Local and live axe sweeps found zero violations across landing, demo, privacy, terms, and 404 at desktop and phone widths.
+- Normal, invalid, boundary, recovery, keyboard, reduced-motion, offline, privacy, links, legal-route, and real HTTP 404 paths passed live.
+- The clean-build and live `index.html` and `sw.js` hashes matched exactly. Details are in [verification-3.md](verification-3.md).
+
+## Repair 2 changes
 
 - Every visible phone control now measures at least 44 × 44 CSS px. This includes demo actions, wordmarks, help and range controls, the Wi-Fi checkbox, CSV picker, legal contact, and footer links.
 - Phone and tablet navigation remains visible as a compact second row, which keeps Batch CSV reachable on smaller screens.
