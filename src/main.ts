@@ -48,7 +48,7 @@ let toastTimer = 0;
 const fieldTemplates: Record<CodeType, { kicker: string; title: string; html: string }> = {
   url: {
     kicker: 'Destination', title: 'Where should it point?', html: `
-      <label class="field" for="url"><span>Website address</span><input id="url" name="url" type="url" inputmode="url" autocomplete="url" placeholder="example.com/menu" aria-describedby="url-hint" autofocus /></label>
+      <label class="field" for="url"><span>Website address</span><input id="url" name="url" type="url" inputmode="url" autocomplete="url" placeholder="example.com/menu" aria-describedby="url-hint" /></label>
       <small class="field-hint" id="url-hint">We add https:// when you omit it. The final address is shown in the payload inspector.</small>`,
   },
   wifi: {

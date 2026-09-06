@@ -242,6 +242,8 @@ input[type="file"] { min-height: 48px; border: 1px dashed #8299a4; background: v
   .hero-plate { width: min(720px, 100%); margin: auto; }
   .workspace { grid-template-columns: 1fr; }
   .editor-sheet { border-right: 0; border-bottom: 1px solid var(--blue); }
+  .demo-mode .output-sheet { order: -1; border-bottom: 1px solid var(--blue); }
+  .demo-mode .editor-sheet { border-bottom: 0; }
   .batch-workspace, .trust-section { grid-template-columns: 1fr; }
   .batch-input { border-right: 0; border-bottom: 1px solid var(--blue); }
 }
