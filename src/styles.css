@@ -257,7 +257,12 @@ input[type="file"] { min-height: 48px; border: 1px dashed #8299a4; background: v
   .hero-actions .button { width: 100%; }
   .demo-banner { align-items: flex-start; flex-direction: column; padding: 10px 20px; gap: 4px; }
   .demo-actions { gap: 18px; }
-  .demo-intro { padding-top: 36px; padding-bottom: 28px; }
+  .demo-intro { padding-top: 20px; padding-bottom: 20px; }
+  .demo-intro .eyebrow { margin-bottom: 8px; }
+  .demo-intro h1 { font-size: 34px; }
+  .demo-intro > p:last-child, .demo-mode .section-heading > p { display: none; }
+  .demo-mode .generator-section { padding-top: 32px; }
+  .demo-mode .section-heading { margin-bottom: 16px; }
   .proof-strip li { min-width: 0; flex: 1; padding-right: 8px; }
   .hero-plate { padding: 14px; transform: rotate(.5deg); }
   .plate-stamp { width: 88px; height: 57px; right: 5%; }
