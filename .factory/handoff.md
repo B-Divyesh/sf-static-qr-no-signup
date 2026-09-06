@@ -1,4 +1,17 @@
-# Handoff — Static QR repair 1
+# Handoff — Static QR review 2
+
+## Strict review 2
+
+**FAIL — 2 findings and 5 public claims without dedicated declared claim tests.** Review completed on 2026-09-06 against implementation `eaea1152595a2ff7e4ae44be929e551f42165a1a` and documentation `6b242543d863468489f69aa05209ed4b2e683ca9`. The review-start revision `755d876778bd4afa009f10d329d19040241b163a` changes reports only.
+
+The main job works. A detached checkout passed `npm ci`, 13/13 unit tests, the production build, every one of the 18 declared claim commands run separately, and the complete 23/23 browser suite. Fresh live desktop and phone sessions passed the sample, reset, Start for real isolation, downloads, invalid and recovery paths, 1,200-character boundary, keyboard tabs, reduced motion, offline reload/update, privacy/network, route titles, legal pages, links, and styled HTTP 404 checks. Live axe found 0 violations on five routes at both sizes. A clean Lighthouse mobile run scored 100/100/100/100 with LCP 1.4 s and CLS 0. Live and rebuilt candidate artifacts match.
+
+Two contract failures remain:
+
+- Several phone controls are below the required 44 × 44 CSS px target. The required **Start for real** demo exit measured 110 × 15 px; Reset demo, the help button, range input, wordmark, footer links, and privacy email link were also undersized.
+- Five public batch promises have no dedicated declared `@claim` command: template download, CSV drop, quoted/escaped CSV, invalid-row exclusion, and the full documented five-type batch schema. Two have incidental untagged tests, but the claim contract still requires manifest entries and dedicated tags. The copy audit is also incomplete.
+
+Full evidence and exact dispositions are in [review-2.md](review-2.md). No product code was changed. The next repair should enlarge the measured targets, complete the claim manifest/tests and copy audit, deploy, and re-run review.
 
 ## Independent verification 2
 
