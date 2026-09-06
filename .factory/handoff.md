@@ -1,8 +1,8 @@
-# Handoff — Static QR verification 3
+# Handoff — Static QR review 3
 
 ## Status
 
-Independent verification 3 passed at https://static-qr-no-signup.sociobot.in. No product code was changed during this verification.
+Strict review 3 passed at https://static-qr-no-signup.sociobot.in. No product code was changed during this review.
 
 - Runtime implementation SHA: `5046c607ef36aa628e432251c48904c25cd37632`
 - Documentation base SHA: `e1ac7123fac3adc9ca8aeaef3146e3f3330a7ad9`
@@ -12,14 +12,16 @@ Independent verification 3 passed at https://static-qr-no-signup.sociobot.in. No
 
 Later handoff and evidence commits are documentation-only. The deployed `dist/` artifact comes from the runtime implementation above.
 
-## Verification 3
+## Review 3
 
 - Fresh desktop and phone browsers showed the job, audience, and **Try it with sample data** before scrolling.
 - The North Pier Coffee demo was populated, labelled, decoder-verified, resettable, and cleared on Start for real without retaining real input.
 - All 23 declared claim commands passed separately from a clean checkout. The complete browser suite passed 29/29; unit tests passed 13/13.
 - Local and live axe sweeps found zero violations across landing, demo, privacy, terms, and 404 at desktop and phone widths.
 - Normal, invalid, boundary, recovery, keyboard, reduced-motion, offline, privacy, links, legal-route, and real HTTP 404 paths passed live.
-- The clean-build and live `index.html` and `sw.js` hashes matched exactly. Details are in [verification-3.md](verification-3.md).
+- The clean-build and live `index.html` and `sw.js` hashes matched exactly. Details are in [review-3.md](review-3.md).
+
+Review 3 found **0 findings and 0 untested public claims**. It rechecked all earlier minor findings: the demo sandbox, claim coverage, first-screen copy, designed 404, SVG logo chooser, PDF size, phone touch targets, batch outcomes, and copy audit are all closed.
 
 ## Repair 2 changes
 
