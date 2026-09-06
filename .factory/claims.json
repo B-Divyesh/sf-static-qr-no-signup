@@ -84,6 +84,41 @@
     "sandbox": "fresh browser context at /demo; build a PNG ZIP and inspect one file’s dimensions"
   },
   {
+    "id": "csv-template-download",
+    "claim": "Downloads a usable CSV template for all five supported QR types.",
+    "where": "Download CSV template action, README",
+    "test": "npm run test:claims -- --grep @claim:csv-template-download",
+    "sandbox": "fresh browser context at /demo; download the template, import it, build its ZIP, and inspect all five expected files"
+  },
+  {
+    "id": "csv-drop",
+    "claim": "Accepts a CSV dropped on the batch sheet.",
+    "where": "batch drop zone",
+    "test": "npm run test:claims -- --grep @claim:csv-drop",
+    "sandbox": "fresh browser context at /demo; dispatch a real File through the drop path, build its ZIP, and inspect the output"
+  },
+  {
+    "id": "csv-quoted-fields",
+    "claim": "CSV quoting and escaped quotes are supported.",
+    "where": "README batch instructions",
+    "test": "npm run test:claims -- --grep @claim:csv-quoted-fields",
+    "sandbox": "fresh browser context at /demo; import quoted content, build a PNG ZIP, and decode the QR back to the exact punctuation"
+  },
+  {
+    "id": "batch-invalid-row-exclusion",
+    "claim": "Invalid CSV rows are identified before ZIP creation and omitted from the download.",
+    "where": "batch error output, README",
+    "test": "npm run test:claims -- --grep @claim:batch-invalid-row-exclusion",
+    "sandbox": "fresh browser context at /demo; import valid and invalid rows, inspect the reported row number, and verify only valid files are in the ZIP"
+  },
+  {
+    "id": "batch-five-type-schema",
+    "claim": "Batch CSV supports URL, Wi-Fi, vCard, event, and text rows with the documented type-specific columns.",
+    "where": "batch column guide, README",
+    "test": "npm run test:claims -- --grep @claim:batch-five-type-schema",
+    "sandbox": "fresh browser context at /demo; import all five types, build a PNG ZIP, and decode each file to verify every documented field"
+  },
+  {
     "id": "offline-after-first-visit",
     "claim": "Works offline after the first visit.",
     "where": "landing facts, privacy page, README",

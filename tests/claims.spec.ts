@@ -1,6 +1,9 @@
 import { expect, test } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { unzipSync } from 'fflate';
+import jsQR from 'jsqr';
+import { PNG } from 'pngjs';
+import type { Download } from '@playwright/test';
 
 const SAMPLE_URL = 'https://north-pier-coffee.example/menu?location=market-square';
 
@@ -18,6 +21,25 @@ function httpRequests(page: import('@playwright/test').Page): string[] {
     if (request.url().startsWith('http://') || request.url().startsWith('https://')) requests.push(request.url());
   });
   return requests;
+}
+
+function decodePng(bytes: Uint8Array): string {
+  const png = PNG.sync.read(Buffer.from(bytes));
+  const decoded = jsQR(Uint8ClampedArray.from(png.data), png.width, png.height, { inversionAttempts: 'attemptBoth' });
+  expect(decoded, 'the downloaded batch PNG should be a decodable QR').not.toBeNull();
+  return decoded!.data;
+}
+
+async function readDownload(download: Download): Promise<Uint8Array> {
+  const path = await download.path();
+  expect(path, `download ${download.suggestedFilename()} should have a local path`).not.toBeNull();
+  return new Uint8Array(await readFile(path!));
+}
+
+async function openBatch(page: import('@playwright/test').Page): Promise<void> {
+  await openDemo(page);
+  await page.getByRole('button', { name: 'Batch CSV' }).click();
+  await expect(page.locator('#batch')).toBeVisible();
 }
 
 test('@claim:demo-sandbox loads, resets, and discards only sample data', async ({ page }) => {
@@ -178,6 +200,125 @@ test('@claim:batch-png-1024 builds a PNG ZIP with 1024 px QR files', async ({ pa
   const png = Buffer.from(archive['market-menu.png']!);
   expect(png.readUInt32BE(16)).toBe(1024);
   expect(png.readUInt32BE(20)).toBe(1024);
+});
+
+test('@claim:csv-template-download downloads a template that builds all five sample QR files', async ({ page }) => {
+  await openBatch(page);
+  const templatePromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Download CSV template' }).click();
+  const template = await templatePromise;
+  expect(template.suggestedFilename()).toBe('static-qr-template.csv');
+  const templatePath = await template.path();
+
+  await page.locator('#csv-file').setInputFiles(templatePath!);
+  await expect(page.locator('#batch-summary')).toContainText('05');
+  await expect(page.locator('#batch-errors')).toHaveText('');
+
+  const zipPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Build ZIP' }).click();
+  const archive = unzipSync(await readDownload(await zipPromise));
+  expect(Object.keys(archive).sort()).toEqual([
+    'ada-contact.svg',
+    'guest-wifi.svg',
+    'menu.svg',
+    'opening-night.svg',
+    'welcome.svg',
+  ]);
+});
+
+test('@claim:csv-drop accepts a dropped CSV and builds its QR ZIP', async ({ page }) => {
+  await openBatch(page);
+  await page.locator('#drop-zone').evaluate((zone) => {
+    const transfer = new DataTransfer();
+    transfer.items.add(new File(
+      ['filename,type,text\nmarket-welcome,text,Welcome to Market Square'],
+      'dropped-market.csv',
+      { type: 'text/csv' },
+    ));
+    zone.dispatchEvent(new DragEvent('dragenter', { bubbles: true, cancelable: true, dataTransfer: transfer }));
+    zone.dispatchEvent(new DragEvent('drop', { bubbles: true, cancelable: true, dataTransfer: transfer }));
+  });
+  await expect(page.locator('#batch-summary')).toContainText('01');
+  await expect(page.locator('#batch-summary')).toContainText('dropped-market.csv is ready');
+
+  const zipPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Build ZIP' }).click();
+  const archive = unzipSync(await readDownload(await zipPromise));
+  expect(Object.keys(archive)).toEqual(['market-welcome.svg']);
+});
+
+test('@claim:csv-quoted-fields preserves quoted commas and escaped quotes in a batch QR', async ({ page }) => {
+  await openBatch(page);
+  await page.locator('#csv-file').setInputFiles({
+    name: 'quoted-market.csv',
+    mimeType: 'text/csv',
+    buffer: Buffer.from('filename,type,text\nmarket-note,text,"Welcome, ""traders"""'),
+  });
+  await page.locator('#batch-format').selectOption('png');
+  const zipPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Build ZIP' }).click();
+  const archive = unzipSync(await readDownload(await zipPromise));
+  expect(decodePng(archive['market-note.png']!)).toBe('Welcome, "traders"');
+});
+
+test('@claim:batch-invalid-row-exclusion reports invalid rows and omits them from the ZIP', async ({ page }) => {
+  await openBatch(page);
+  await page.locator('#csv-file').setInputFiles({
+    name: 'mixed-market.csv',
+    mimeType: 'text/csv',
+    buffer: Buffer.from([
+      'filename,type,text,ssid,password,encryption',
+      'menu,text,Market menu,,,',
+      'guest,wifi,,Market Guest,,WPA',
+      'welcome,text,Welcome to the market,,,',
+    ].join('\n')),
+  });
+  await expect(page.locator('#batch-errors')).toContainText('Row 3');
+  await expect(page.locator('#batch-summary')).toContainText('02');
+
+  const zipPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Build ZIP' }).click();
+  const archive = unzipSync(await readDownload(await zipPromise));
+  expect(Object.keys(archive).sort()).toEqual(['menu.svg', 'welcome.svg']);
+  expect(archive['guest.svg']).toBeUndefined();
+});
+
+test('@claim:batch-five-type-schema maps every documented type-specific column into its QR payload', async ({ page }) => {
+  test.setTimeout(90_000);
+  await openBatch(page);
+  await page.locator('#csv-file').setInputFiles({
+    name: 'five-types.csv',
+    mimeType: 'text/csv',
+    buffer: Buffer.from([
+      'filename,type,url,ssid,password,encryption,hidden,first_name,last_name,phone,email,organization,event_title,start,end,location,description,text',
+      'menu,url,example.com/menu?service=dinner,,,,,,,,,,,,,,,',
+      'guest,wifi,,Market Guest,coffee-pass,WPA,true,,,,,,,,,,,',
+      'ada,vcard,,,,,,Ada,Lovelace,+44 20 0000 0000,ada@example.com,Analytical Engines,,,,,',
+      'opening,event,,,,,,,,,,,Opening night,2026-09-12T18:00,2026-09-12T21:00,Main Hall,Doors open,',
+      'welcome,text,,,,,,,,,,,,,,,,Welcome to Market Square',
+    ].join('\n')),
+  });
+  await expect(page.locator('#batch-summary')).toContainText('05');
+  await expect(page.locator('#batch-errors')).toHaveText('');
+  await page.locator('#batch-format').selectOption('png');
+
+  const zipPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Build ZIP' }).click();
+  const archive = unzipSync(await readDownload(await zipPromise));
+  const payloads = Object.fromEntries(Object.entries(archive).map(([name, bytes]) => [name, decodePng(bytes)]));
+
+  expect(payloads['menu.png']).toBe('https://example.com/menu?service=dinner');
+  expect(payloads['guest.png']).toBe('WIFI:T:WPA;S:Market Guest;P:coffee-pass;H:true;;');
+  expect(payloads['ada.png']).toContain('N:Lovelace;Ada;;;');
+  expect(payloads['ada.png']).toContain('TEL;TYPE=CELL:+44 20 0000 0000');
+  expect(payloads['ada.png']).toContain('EMAIL;TYPE=INTERNET:ada@example.com');
+  expect(payloads['ada.png']).toContain('ORG:Analytical Engines');
+  expect(payloads['opening.png']).toContain('SUMMARY:Opening night');
+  expect(payloads['opening.png']).toContain('DTSTART:20260912T180000Z');
+  expect(payloads['opening.png']).toContain('DTEND:20260912T210000Z');
+  expect(payloads['opening.png']).toContain('LOCATION:Main Hall');
+  expect(payloads['opening.png']).toContain('DESCRIPTION:Doors open');
+  expect(payloads['welcome.png']).toBe('Welcome to Market Square');
 });
 
 test('@claim:offline-after-first-visit reloads the sample and generates while offline', async ({ browser }) => {
