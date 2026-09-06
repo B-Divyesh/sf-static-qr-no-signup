@@ -1,5 +1,11 @@
 # Handoff — Static QR v1
 
+## Review 1 status: FAIL
+
+On **2026-09-06**, an independent review of live `https://static-qr-no-signup.sociobot.in` and a clean checkout found **6 findings and 15 untested public claims**. The product is **not accepted**. The highest-severity issue is that `/demo` is just the landing-page fallback, not the required sample-data sandbox. The claims manifest and claim tests, designed 404 page, plain-word first screen, and two earlier export-input findings also remain open. See [review 1](review-1.md) for evidence and required repairs.
+
+Reviewed implementation candidate: `4b207d6a6cfd9dd976eb74b108f5cbb569da7f2d`. The review/report baseline was `ed7fa940b3961d75588d6eec3bee06b91136f0d9`; it contains documentation-only changes after the candidate.
+
 ## Independent verification status: PASS
 
 On **2026-08-27**, an independent verifier rebuilt and tested commit `4b207d6a6cfd9dd976eb74b108f5cbb569da7f2d` from a fresh detached checkout and tested `https://static-qr-no-signup.sociobot.in/`.
