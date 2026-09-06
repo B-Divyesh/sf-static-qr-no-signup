@@ -2,7 +2,7 @@
 
 ## Candidate and deployment
 
-- Runtime implementation candidate: `ba5173df3237a0a557ab81dec8ade6dd3c6d2896`.
+- Runtime implementation candidate: `eaea1152595a2ff7e4ae44be929e551f42165a1a`.
 - The candidate was built to `dist/`, deployed to `https://static-qr-no-signup.sociobot.in`, and checked cold over HTTPS.
 - The deployed `index.html` SHA-256 was `50feb770564018bc9b45f058a4a071dd196b491ac008c52563a650a9c2c1609b`; it exactly matched the built file. The deployed `sw.js` SHA-256 was `8c7dcfde6484a858f9647e3a173dfe7322d445a46e9ab1a75f87950b46146f0e`; it also exactly matched the built file.
 
@@ -19,7 +19,7 @@
 
 ## Verification
 
-- Final clean checkout: cloned candidate `ba5173d` into `/tmp/static-qr-clean-ba5173d`; `npm ci` completed with 0 vulnerabilities, `npm test` passed 13/13, and `npm run build` passed.
+- Clean checkout: cloned the functional candidate `ba5173d` into `/tmp/static-qr-clean-ba5173d`; `npm ci` completed with 0 vulnerabilities, `npm test` passed 13/13, and `npm run build` passed. The final `eaea115` deployment adds route metadata only; its `npm test` and production build also passed.
 - Every one of the 18 `test` commands in `claims.json` ran from that clean checkout and passed. They cover the demo, free/account flow, local/no-upload processing, direct payload, five types, SVG/PNG/PDF exports, logo verification, 500-file SVG batch, 1024 px batch PNG, offline reload, cookies, analytics, third-party runtime requests, retention, and local storage.
 - The final workspace browser suite passed 23/23. It additionally covers invalid URL and event recovery, the 1,200-character text boundary, mixed valid/invalid CSV recovery, arrow-key tabs, and reduced motion.
 - `npm run test:a11y -- http://127.0.0.1:4173` passed with 0 axe violations at desktop and phone widths for `/`, `/demo`, `/privacy/`, `/terms/`, and `/404.html`. It also checked one h1, title, lang, main, image alt, overflow, and console errors.
